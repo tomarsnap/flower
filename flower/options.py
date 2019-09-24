@@ -65,6 +65,8 @@ define("tasks_columns", type=str,
 define("auth_provider", default='flower.views.auth.GoogleAuth2LoginHandler',
        help="auth handler class")
 define("url_prefix", type=str, help="base url prefix")
+define("websocket_ping_interval", type=int, default=15,
+       help="Keep reverse proxies from disconnecting")
 
 # deprecated options
 define("inspect", default=False, help="inspect workers", type=bool)
