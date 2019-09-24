@@ -55,6 +55,8 @@ class EventsState(State):
             succeeded = counter.get('task-succeeded', 0)
             retried = counter.get('task-retried', 0)
             active = started - succeeded - failed - retried
+            event["received_tasks"] = processed
+            event["finished_tasks"] = succeeded + failed
             event["active_tasks"] = active
             cls.send_message(event)
 
