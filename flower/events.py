@@ -42,11 +42,20 @@ class EventsState(State):
         event_type = event['type']
 
         self.counter[worker_name][event_type] += 1
+        self.counter["all_workers"][event_type] += 1
 
         # Send event to api subscribers (via websockets)
         classname = api.events.getClassName(event_type)
         cls = getattr(api.events, classname, None)
         if cls:
+            counter = self.counter["all_workers"]
+            started = counter.get('task-started', 0)
+            processed = counter.get('task-received', 0)
+            failed = counter.get('task-failed', 0)
+            succeeded = counter.get('task-succeeded', 0)
+            retried = counter.get('task-retried', 0)
+            active = started - succeeded - failed - retried
+            event.[active] = active
             cls.send_message(event)
 
         # Save the event
