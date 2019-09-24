@@ -9,15 +9,17 @@ class EventsApiHandler(BaseWebSocketHandler):
     def open(self, task_id=None):
         BaseWebSocketHandler.open(self)
         self.task_id = task_id
-
-    def send_message(self, event):
-        for l in self.listeners:
+    
+    @classmethod
+    def send_message(cls, event):
+        for l in cls.listeners:
             if not l.task_id or l.task_id == event['uuid']:
-                event["actives"] = self.get_events_state()
+                event["actives"] = cls.get_events_state()
                 l.write_message(event)
-                
-    def get_events_state(self):
-        state = self.application.events.state
+    
+    @classmethod
+    def get_events_state(cls):
+        state = cls.application.events.state
         # workers = OrderedDict()
         actives = []
         for name, worker in sorted(state.workers.items()):
