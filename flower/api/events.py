@@ -3,6 +3,7 @@ from __future__ import absolute_import
 import sys
 
 from ..api import BaseWebSocketHandler
+from ..app import Flower
 
 
 class EventsApiHandler(BaseWebSocketHandler):
@@ -19,7 +20,7 @@ class EventsApiHandler(BaseWebSocketHandler):
     
     @classmethod
     def get_events_state(cls):
-        state = cls.application.events.state
+        state = Flower.events.state
         # workers = OrderedDict()
         actives = []
         for name, worker in sorted(state.workers.items()):
